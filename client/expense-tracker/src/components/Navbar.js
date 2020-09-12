@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import SideBar from "./SideBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +30,12 @@ const Navbar = ({ user, setLoggedIn }) => {
     setLoggedIn(false);
   };
 
+  const handleMenue = () => {
+    console.log("clickkk");
+  };
+
+  console.log("user", user);
+
   return (
     <>
       <div className={classes.root}>
@@ -39,15 +46,16 @@ const Navbar = ({ user, setLoggedIn }) => {
               className={classes.menuButton}
               color="inherit"
               aria-label="menu"
+              onClick={handleMenue}
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
               Finance Tracker
             </Typography>
-            {/* <Typography variant="h6" className={classes.title}>
-              welcome
-            </Typography> */}
+            <Typography variant="h6" className={classes.title}>
+              welcome{user.name}
+            </Typography>
             {/* <Link to="/signup" onClick={handleLogout} className="styledanchor">
               Logout
             </Link> */}

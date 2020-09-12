@@ -92,14 +92,22 @@ export async function delExpense(id) {
 
 //signup
 export async function signup(data) {
-  const res = await fetch(`/api/users`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  return await res.json();
+  try {
+    const res = await fetch(`/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).catch((e) => {
+      console.log("error", e);
+    });
+    return await res.json().catch((e) => {
+      console.log("error", e);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 //login

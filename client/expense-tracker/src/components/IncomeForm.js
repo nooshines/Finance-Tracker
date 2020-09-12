@@ -19,21 +19,44 @@ const IncomeForm = () => {
   const classes = useStyles();
 
   const { incomes, setIncome } = useContext(BudgetContext);
-  const [incomeInput, setIncomeInput] = useState([]);
-  const [amountInput, setAmountInput] = useState([]);
+  const [incomeInput, setIncomeInput] = useState("");
+  const [amountInput, setAmountInput] = useState("");
+  const [errorIncomeInput, setErrorIncomeInput] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (incomeInput && amountInput) {
       const newIncome = await addIncome({
         title: incomeInput,
-        amount: amountInput,
+        amount: amountInput * 1,
       });
       setIncome([...incomes, newIncome]);
       setIncomeInput("");
       setAmountInput("");
+      setErrorIncomeInput("");
     } else {
-      alert("please fill out the fields");
+      if (!incomeInput) {
+        setErrorIncomeInput("Income Input is required");
+      }
+    }
+  };
+
+  const onChangeHandler = (e) => {
+    if (e.currentTarget.name === "income") {
+      setIncomeInput(e.currentTarget.value);
+    } else {
+      setAmountInput(e.currentTarget.value);
+    }
+  };
+
+  const onBlurHandler = (e) => {
+    if (e.currentTarget.name === "income") {
+      setIncomeInput(e.currentTarget.value);
+      !e.currentTarget.value
+        ? setErrorIncomeInput("Income Input is required")
+        : setErrorIncomeInput("");
+    } else {
+      setAmountInput(e.currentTarget.value);
     }
   };
 
@@ -45,18 +68,22 @@ const IncomeForm = () => {
         autoComplete="off"
       >
         <TextField
+          error={errorIncomeInput ? true : false}
+          helperText={errorIncomeInput ? errorIncomeInput : ""}
           label="income"
           variant="outlined"
           name="income"
           value={incomeInput}
-          onChange={(e) => setIncomeInput(e.currentTarget.value)}
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
         />
         <TextField
+          type="number"
           label="amount"
           variant="outlined"
           name="amount"
           value={amountInput}
-          onChange={(e) => setAmountInput(e.currentTarget.value)}
+          onChange={onChangeHandler}
         />
         <Button type="submit" variant="contained">
           Submit

@@ -4,6 +4,7 @@ class CreateIncomes < ActiveRecord::Migration[6.0]
       t.string :title
       t.integer :amount
       t.integer :user_id
+      t.timestamps
     end
   end
 end

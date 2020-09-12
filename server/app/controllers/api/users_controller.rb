@@ -11,7 +11,12 @@ class Api::UsersController < ApplicationController
   #create
   def create
     user = User.create(user_params)
-    render json: user
+    if user.valid?
+      render json:user , status: :created
+    else
+      render json: {message: 'unable to create user', errors: user.errors.full_messages}, status: :unprocessable_entity
+    end
+
   end
 
   #update

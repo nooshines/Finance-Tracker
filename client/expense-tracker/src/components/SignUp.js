@@ -2,9 +2,25 @@ import React, { useState } from "react";
 import { signup } from "../api";
 import { Link } from "react-router-dom";
 
+import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
 const SignUp = () => {
-  const [formData, setFormData] = useState({});
+  const classes = useStyles();
+
+  const [formData, setFormData] = useState({ name: "", password: "" });
   const [open, setOpen] = useState(false);
+  const [severity, setSeverity] = useState("info");
+  const [msg, setMsg] = useState("");
 
   const onChange = (e) => {
     const name = e.currentTarget.name;
@@ -14,11 +30,22 @@ const SignUp = () => {
   };
 
   const onSubmit = async (e) => {
+    console.log("formDta", formData);
     e.preventDefault();
-    const user = await signup({ user: formData });
-    setFormData("");
-    if (user) {
+    const user = await signup({ user: formData }).catch((err) => {
+      console.log("errors", err);
+    });
+    console.log("user", user);
+
+    setFormData({ name: "", password: "" });
+    if (user.errors) {
       setOpen(true);
+      setSeverity("error");
+      setMsg("User already exist!");
+    } else if (user.id) {
+      setOpen(true);
+      setSeverity("info");
+      setMsg(" User Successfully created, Please Login !");
     }
   };
 
@@ -30,6 +57,7 @@ const SignUp = () => {
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input
+              value={formData.name}
               id="name"
               type="name"
               name="name"
@@ -40,6 +68,7 @@ const SignUp = () => {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
+              value={formData.password}
               id="password"
               type="password"
               name="password"
@@ -53,7 +82,7 @@ const SignUp = () => {
             value="Register"
             className="btn btn-primary btn-block"
           />
-          {open && <p> user successfully created, please login !</p>}
+          {open && <Alert severity={severity}>{msg}</Alert>}
         </form>
         <span>Have an acount?</span>
         <Link to="/login">Login</Link>

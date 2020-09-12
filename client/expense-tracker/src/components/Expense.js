@@ -21,6 +21,7 @@ const StyledInputBase = styled(InputBase)`
   width: 40%;
   &.view {
     input {
+      color: black;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -118,12 +119,15 @@ const Expense = ({ expense }) => {
           <Grid item container s={12}>
             <Grid item xs={6}>
               <StyledInputBase
+                disabled={true}
                 defaultValue={expense.title}
                 className="view"
               ></StyledInputBase>
+              <span>$</span>
               <StyledInputBase
+                disabled={true}
                 className="view"
-                defaultValue={`$ ${expense.amount}`}
+                defaultValue={expense.amount}
               ></StyledInputBase>
             </Grid>
             <Grid item justify="flex-end" xs={6}>

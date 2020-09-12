@@ -19,15 +19,15 @@ const ExpenseForm = () => {
   const classes = useStyles();
 
   const { expenses, setExpense } = useContext(BudgetContext);
-  const [expenseInput, setExpenseInput] = useState([]);
-  const [amountInput, setAmountInput] = useState([]);
+  const [expenseInput, setExpenseInput] = useState("");
+  const [amountInput, setAmountInput] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (expenseInput && amountInput) {
       const newExpense = await addExpense({
         title: expenseInput,
-        amount: amountInput,
+        amount: amountInput * 1,
       });
       setExpense([...expenses, newExpense]);
       setExpenseInput("");
@@ -53,6 +53,7 @@ const ExpenseForm = () => {
         />
 
         <TextField
+          type="number"
           label="amount"
           variant="outlined"
           name="amount"
