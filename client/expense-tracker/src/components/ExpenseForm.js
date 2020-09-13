@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "25ch",
+      // width: "25ch",
     },
   },
 }));
@@ -21,19 +21,50 @@ const ExpenseForm = () => {
   const { expenses, setExpense } = useContext(BudgetContext);
   const [expenseInput, setExpenseInput] = useState("");
   const [amountInput, setAmountInput] = useState("");
+  const [errorExpenseInput, setErrorExpenseInput] = useState("");
+  const [errorAmountInput, setErrorAmountInput] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (expenseInput && amountInput) {
       const newExpense = await addExpense({
         title: expenseInput,
-        amount: amountInput * 1,
+        amount: amountInput,
       });
       setExpense([...expenses, newExpense]);
       setExpenseInput("");
       setAmountInput("");
+      setErrorExpenseInput("");
+      setErrorAmountInput("");
     } else {
-      alert("please fill out the fields");
+      if (!expenseInput) {
+        setErrorExpenseInput("Expense Input is required");
+      }
+      if (!amountInput) {
+        setErrorAmountInput("Amount Input is required");
+      }
+    }
+  };
+
+  const onChangeHandler = (e) => {
+    if (e.currentTarget.name === "expense") {
+      setExpenseInput(e.currentTarget.value);
+    } else {
+      setAmountInput(e.currentTarget.value);
+    }
+  };
+
+  const onBlurHandler = (e) => {
+    if (e.currentTarget.name === "expense") {
+      setExpenseInput(e.currentTarget.value);
+      !e.currentTarget.value
+        ? setErrorExpenseInput("Expense Input is required")
+        : setErrorExpenseInput("");
+    } else {
+      setAmountInput(e.currentTarget.value);
+      !e.currentTarget.value
+        ? setErrorAmountInput("Amount Input is required")
+        : setErrorAmountInput("");
     }
   };
 
@@ -45,20 +76,30 @@ const ExpenseForm = () => {
         autoComplete="off"
       >
         <TextField
+          id="outlined-size-small"
+          size="small"
+          error={errorExpenseInput ? true : false}
+          helperText={errorExpenseInput ? errorExpenseInput : ""}
           label="expense"
           variant="outlined"
           name="expense"
           value={expenseInput}
-          onChange={(e) => setExpenseInput(e.currentTarget.value)}
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
         />
 
         <TextField
+          id="outlined-size-small"
+          size="small"
+          error={errorAmountInput ? true : false}
+          helperText={errorAmountInput ? errorAmountInput : ""}
           type="number"
           label="amount"
           variant="outlined"
           name="amount"
           value={amountInput}
-          onChange={(e) => setAmountInput(e.currentTarget.value)}
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
         />
         <Button type="submit" variant="contained">
           Submit

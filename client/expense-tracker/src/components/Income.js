@@ -27,7 +27,8 @@ const StyledInputBase = styled(InputBase)`
     }
   }
   &.edit {
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
+    background-color: #f5f5f5;
     padding: 5px;
     border-radius: 5px;
     margin-right: 3px;
@@ -54,6 +55,7 @@ const Income = ({ income }) => {
   };
 
   const saveHandler = async () => {
+    console.log("id", currentId);
     const newIncome = await updateIncome(currentId, {
       title: incomeInput,
       amount: amountInput,
@@ -63,7 +65,13 @@ const Income = ({ income }) => {
     let findIncomeIndex = updateIncomeState.findIndex((income) => {
       return income.id === currentId;
     });
-    if (findIncomeIndex !== undefined) {
+    console.log("finsIndexIncome", findIncomeIndex);
+    console.log("newincome.data", newIncome.data);
+    console.log(
+      "updateIncomeState[findIncomeIndex]",
+      updateIncomeState[findIncomeIndex]
+    );
+    if (findIncomeIndex && findIncomeIndex !== undefined) {
       updateIncomeState[findIncomeIndex] = newIncome.data;
       setIncome([...updateIncomeState]);
     }

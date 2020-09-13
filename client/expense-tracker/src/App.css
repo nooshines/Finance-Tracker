@@ -2,7 +2,11 @@
 
 /* Global Styles */
 :root {
-  --primary-color: #6c5fa7;
+  --primary-color: #22b2da;
+}
+
+body {
+  background-color: #daeaf6;
 }
 
 a {
@@ -11,7 +15,7 @@ a {
 }
 
 a:hover {
-  color: #666;
+  color: #0d8abc;
 }
 
 .btn {
@@ -81,6 +85,8 @@ button {
 
 .form-container h1,
 h2,
-h3 {
+h3,
+h5,
+h4 {
   text-align: center;
 }

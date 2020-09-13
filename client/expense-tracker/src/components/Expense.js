@@ -27,7 +27,8 @@ const StyledInputBase = styled(InputBase)`
     }
   }
   &.edit {
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
+    background-color: #f5f5f5;
     padding: 5px;
     border-radius: 5px;
     margin-right: 3px;

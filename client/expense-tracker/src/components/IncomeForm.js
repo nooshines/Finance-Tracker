@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "25ch",
+      // width: "25ch",
     },
   },
 }));
@@ -22,21 +22,26 @@ const IncomeForm = () => {
   const [incomeInput, setIncomeInput] = useState("");
   const [amountInput, setAmountInput] = useState("");
   const [errorIncomeInput, setErrorIncomeInput] = useState("");
+  const [errorAmountInput, setErrorAmountInput] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (incomeInput && amountInput) {
       const newIncome = await addIncome({
         title: incomeInput,
-        amount: amountInput * 1,
+        amount: amountInput,
       });
       setIncome([...incomes, newIncome]);
       setIncomeInput("");
       setAmountInput("");
       setErrorIncomeInput("");
+      setErrorAmountInput("");
     } else {
       if (!incomeInput) {
         setErrorIncomeInput("Income Input is required");
+      }
+      if (!amountInput) {
+        setErrorAmountInput("Amount Input is required");
       }
     }
   };
@@ -57,6 +62,9 @@ const IncomeForm = () => {
         : setErrorIncomeInput("");
     } else {
       setAmountInput(e.currentTarget.value);
+      !e.currentTarget.value
+        ? setErrorAmountInput("Amount Input is required")
+        : setErrorAmountInput("");
     }
   };
 
@@ -68,6 +76,8 @@ const IncomeForm = () => {
         autoComplete="off"
       >
         <TextField
+          id="outlined-size-small"
+          size="small"
           error={errorIncomeInput ? true : false}
           helperText={errorIncomeInput ? errorIncomeInput : ""}
           label="income"
@@ -78,12 +88,17 @@ const IncomeForm = () => {
           onBlur={onBlurHandler}
         />
         <TextField
+          id="outlined-size-small"
+          size="small"
+          error={errorAmountInput ? true : false}
+          helperText={errorAmountInput ? errorAmountInput : ""}
           type="number"
           label="amount"
           variant="outlined"
           name="amount"
           value={amountInput}
           onChange={onChangeHandler}
+          onBlur={onBlurHandler}
         />
         <Button type="submit" variant="contained">
           Submit
