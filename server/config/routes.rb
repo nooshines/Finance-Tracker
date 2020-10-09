@@ -8,4 +8,7 @@ Rails.application.routes.draw do
     get 'auth/status', to: 'auth#status'
     post 'auth/login', to: 'auth#login'
   end
+
+  #catch all for anything that doesnt match
+  get '*path', to: 'react#react_app', format: false
 end
